@@ -26,6 +26,7 @@ function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [showAllWix, setShowAllWix] = useState(false);
   const [showAllLogos, setShowAllLogos] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState(null);
 
   const projectdata = [
     {
@@ -355,7 +356,8 @@ function Projects() {
         {logosToShow.map((logo) => (
           <div
             key={logo.id}
-            className="w-full bg-[#1e293b] rounded-xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-[0_0_35px_rgba(34,197,94,0.5)] hover:border-green-400 border border-transparent"
+            className="w-full bg-[#1e293b] rounded-xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-[0_0_35px_rgba(34,197,94,0.5)] hover:border-green-400 border border-transparent cursor-pointer"
+            onClick={() => setSelectedLogo(logo)}
           >
             <div className="p-6 flex items-center justify-center bg-white h-40">
               <img
@@ -368,7 +370,7 @@ function Projects() {
         ))}
       </div>
 
-      {/* See More button for Logos */}
+      {/* See More button for Logos - MOVED OUTSIDE THE MODAL */}
       {logoDesigns.length > 4 && (
         <div className="text-center mt-10 mb-8">
           <button
@@ -382,6 +384,67 @@ function Projects() {
               →
             </span>
           </button>
+        </div>
+      )}
+
+      {/* Logo Modal Popup */}
+      {selectedLogo && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div 
+            className="fixed inset-0" 
+            onClick={() => setSelectedLogo(null)}
+          ></div>
+          <div className="relative bg-[#1e293b] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-6 bg-white flex items-center justify-center min-h-[300px] relative">
+              <img
+                src={selectedLogo.img}
+                alt="Logo design"
+                className="max-w-full max-h-[400px] object-contain"
+              />
+              
+              {/* Navigation buttons */}
+              <div className="flex justify-between items-center absolute top-1/2 left-0 right-0 transform -translate-y-1/2 px-4">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const currentIndex = logosToShow.findIndex(logo => logo.id === selectedLogo.id);
+                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : logosToShow.length - 1;
+                    setSelectedLogo(logosToShow[prevIndex]);
+                  }}
+                  className="bg-gray-800 hover:bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const currentIndex = logosToShow.findIndex(logo => logo.id === selectedLogo.id);
+                    const nextIndex = currentIndex < logosToShow.length - 1 ? currentIndex + 1 : 0;
+                    setSelectedLogo(logosToShow[nextIndex]);
+                  }}
+                  className="bg-gray-800 hover:bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-white mb-2">
+                {selectedLogo.title || "Logo Design"}
+              </h3>
+              {selectedLogo.description && (
+                <p className="text-gray-300">{selectedLogo.description}</p>
+              )}
+            </div>
+            
+            <button
+              onClick={() => setSelectedLogo(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white bg-gray-800 hover:bg-red-500 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200"
+            >
+              ×
+            </button>
+          </div>
         </div>
       )}
     </div>

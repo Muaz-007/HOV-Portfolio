@@ -2,3 +2,27 @@
 html, body {
   overflow-x: hidden;
 }
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  min-width: 200%;
+  animation: marquee 30s linear infinite;
+}
+.rotate-marquee-container {
+  transform-origin: center;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+html {
+  scroll-behavior: smooth;
+}
