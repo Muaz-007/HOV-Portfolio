@@ -15,10 +15,17 @@ import hydration from "./assets/hydration.png";
 import move from "./assets/move.png";
 import credtent from "./assets/credtent.png";
 import simmer from "./assets/simmer.png";
+import abc from "./assets/logos/abc.png";
+import bestcarpet from "./assets/logos/bestcarpet.png";
+import bestpetservice from "./assets/logos/bestpetservice.png";
+import passplay from "./assets/logos/passplay.png";
+import sowfinLogo from "./assets/logos/sowfin.png"; // Renamed to avoid conflict
+import thethai from "./assets/logos/thethai.png";
 
 function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [showAllWix, setShowAllWix] = useState(false);
+  const [showAllLogos, setShowAllLogos] = useState(false);
 
   const projectdata = [
     {
@@ -93,22 +100,14 @@ function Projects() {
     },
     {
       id: 10,
-      title: "Assetize.Today",
+      title: "Credtent",
       description:
-        "Founders shouldn’t wait to accumulate enough revenue to get funded!",
-      img: assetize,
-      link: "https://www.assetize.today/",
+        "Credtent helps creators protect and profit from their work in the AI era.",
+      img: credtent,
+      link: "https://www.credtent.org/",
     },
     {
       id: 11,
-      title: "Looty",
-      description:
-        "A gamified loyalty platform offering NFT keys, loot boxes, and exclusive rewards.",
-      img: looty,
-      link: "https://looty.fi/",
-    },
-    {
-      id: 12,
       title: "Utility and Joy",
       description:
         "Utility and joy your premier affiliate marketing online store.",
@@ -116,7 +115,7 @@ function Projects() {
       link: "https://www.utilityandjoy.com/",
     },
     {
-      id: 13,
+      id: 12,
       title: "Hydration Station",
       description:
         "More than just timekeeping, a watch that defines your style and personality every moment.",
@@ -124,20 +123,12 @@ function Projects() {
       link: "https://hydrationstation.com/",
     },
     {
-      id: 14,
+      id: 13,
       title: "Move Fitness",
       description:
         "More than just workouts, the gym is where strength is built and your future is shaped.",
       img: move,
       link: "https://movefitness.com/",
-    },
-    {
-      id: 15,
-      title: "Credtent",
-      description:
-        "Credtent helps creators protect and profit from their work in the AI era.",
-      img: credtent,
-      link: "https://www.credtent.org/",
     },
   ];
   const designs = [
@@ -149,13 +140,39 @@ function Projects() {
       img: simmer,
     },
   ];
-
+  const logoDesigns = [
+    {
+      id: 1,
+      img: abc,
+    },
+    {
+      id: 2,
+      img: bestcarpet,
+    },
+    {
+      id: 3,
+      img: bestpetservice,
+    },
+    {
+      id: 4,
+      img: passplay,
+    },
+    {
+      id: 5,
+      img: sowfinLogo,
+    },
+    {
+      id: 6,
+      img: thethai,
+    },
+  ];
   const wptoggle = showAll ? projectdata.slice(0, 8) : projectdata.slice(0, 6);
-  const coded = projectdata.slice(8, 11);
-  const wix = projectdata.slice(11, 15);
+  const coded = projectdata.slice(8, 10);
+  const wix = projectdata.slice(10, 14);
+  const logosToShow = showAllLogos ? logoDesigns : logoDesigns.slice(0, 4);
 
   return (
-    <div className="overflow-x-hidden w-full">
+    <div className="w-full max-w-full">
       {/* Intro text */}
       <div className="text-center my-12 px-4">
         <p className="font-semibold uppercase tracking-wide bg-gradient-to-l from-green-500 via-green-400 to-green-400 text-transparent bg-clip-text">
@@ -168,9 +185,9 @@ function Projects() {
           See how I transform concepts into engaging digital experiences
         </p>
       </div>
-
+      
       {/* WordPress Projects */}
-      <div className="text-center mb-10 px-4">
+      <div className="text-center mb-10 mt-16 px-4">
         <h2 className="text-2xl text-green-400 font-bold">
           WordPress Projects — Designed for Impact
         </h2>
@@ -229,7 +246,7 @@ function Projects() {
         </h2>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3 sm:grid-cols-1 justify-center px-4 md:px-8">
+      <div className="grid gap-8 md:grid-cols-2 sm:grid-cols-1 justify-center px-4 md:px-8 place-items-center">
         {coded.map((project) => (
           <div
             key={project.id}
@@ -298,29 +315,15 @@ function Projects() {
         ))}
       </div>
 
-      {/* See More for Wix */}
-      <div className="text-center mt-10 mb-12">
-        <button
-          onClick={() => setShowAllWix(!showAllWix)}
-          className="group relative text-lg font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all duration-300"
-        >
-          <span className="relative bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-gradient-to-r after:from-green-400 after:to-green-600 after:rounded-full after:transition-transform after:duration-300 group-hover:after:scale-x-105">
-            {showAllWix ? "Show Less" : "See More"}
-          </span>
-          <span className="text-green-400 group-hover:translate-x-1 transition-transform duration-300">
-            →
-          </span>
-        </button>
-      </div>
       {/* Combined UI/UX Mobile App Designs Section */}
-      <div className="text-center mb-8 mt-16">
-        <div className="rounded-xl p-6 mb-6 ">
+      <div className="text-center mb-8 mt-16 px-4">
+        <div className="rounded-xl p-6 mb-6">
           <h2 className="text-2xl text-green-400 font-bold">
             UI/UX Mobile App Designs — Crafted for Experience
           </h2>
         </div>
 
-        <div className="flex justify-center px-6">
+        <div className="flex justify-center">
           <div className="max-w-6xl w-full text-center">
             <img
               src={simmer}
@@ -340,7 +343,49 @@ function Projects() {
           </div>
         </div>
       </div>
+
+      {/* Logo Designs Section */}
+      <div className="text-center mb-10 px-4">
+        <h2 className="text-2xl text-green-400 font-bold">
+          Logo Designs — Brand Identity Creation
+        </h2>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 place-items-center px-4 md:px-8">
+        {logosToShow.map((logo) => (
+          <div
+            key={logo.id}
+            className="w-full bg-[#1e293b] rounded-xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-[0_0_35px_rgba(34,197,94,0.5)] hover:border-green-400 border border-transparent"
+          >
+            <div className="p-6 flex items-center justify-center bg-white h-40">
+              <img
+                src={logo.img}
+                alt="Logo design"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* See More button for Logos */}
+      {logoDesigns.length > 4 && (
+        <div className="text-center mt-10 mb-8">
+          <button
+            onClick={() => setShowAllLogos(!showAllLogos)}
+            className="group relative text-lg font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all duration-300"
+          >
+            <span className="relative bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-gradient-to-r after:from-green-400 after:to-green-600 after:rounded-full after:transition-transform after:duration-300 group-hover:after:scale-x-105">
+              {showAllLogos ? "Show Less Logos" : "See More Logos"}
+            </span>
+            <span className="text-green-400 group-hover:translate-x-1 transition-transform duration-300">
+              →
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
 export default Projects;
