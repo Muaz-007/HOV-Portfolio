@@ -1,10 +1,11 @@
 import { FaHandPointRight } from "react-icons/fa";
+import pfp from "./assets/hovportfolio.jpg"
 function Hero() {
   return (
     <section className="bg-[#0f172a] text-center pt-32 pb-16 px-6 min-h-screen flex flex-col justify-center items-center">
       {/* Personal profile image */}
       <img
-        src=""
+        src={pfp}
         alt="Waqar Profile pic"
         className="w-32 h-32 rounded-full border-4 border-green-400 shadow-[0_0_15px_#86efac] mb-6"
       />
@@ -46,7 +47,7 @@ function Hero() {
       </p>
       <div className="flex space-x-4 mt-3">
         <a
-          href=""
+          href="#projects"
           className="bg-[#1e293b] hover:bg-[#334155] px-5 py-2 text-white rounded-lg cursor-pointer"
         >
           Explore my work

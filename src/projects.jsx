@@ -173,7 +173,7 @@ function Projects() {
   const logosToShow = showAllLogos ? logoDesigns : logoDesigns.slice(0, 4);
 
   return (
-    <div className="w-full max-w-full">
+    <div id="projects" className="w-full max-w-full">
       {/* Intro text */}
       <div className="text-center my-12 px-4">
         <p className="font-semibold uppercase tracking-wide bg-gradient-to-l from-green-500 via-green-400 to-green-400 text-transparent bg-clip-text">
