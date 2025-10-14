@@ -52,7 +52,7 @@ function Hero() {
         >
           Explore my work
         </a>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg shadow flex items-center space-x-2 cursor-pointer">
+        <button  className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg shadow flex items-center space-x-2 cursor-pointer">
           <FaHandPointRight />
           <span>Let's connect</span>
         </button>

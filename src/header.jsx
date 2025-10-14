@@ -7,7 +7,7 @@ function Header() {
             <a href="#" className="px-4 py-1 text-neutral-100">Home</a>
             <a href="#projects" className="px-4 py-1 text-neutral-100">Projects</a>
             <a href="#about" className="px-4 py-1 text-neutral-100">About</a>
-            <a href="#" className="px-4 py-1 bg-neutral-100 rounded-full">Contact</a>
+            <a href="#contact" className="px-4 py-1 bg-neutral-100 rounded-full">Contact</a>
           </div>
         </div>
       </div>

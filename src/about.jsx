@@ -1,4 +1,12 @@
+import { useState, useRef } from 'react';
+// import emailjs from '@emailjs/browser';
+
 function About() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const formRef = useRef();
+
   const tools = {
     "Frontend Development": [
       "JavaScript",
@@ -27,6 +35,48 @@ function About() {
       "Adobe Photoshop",
       "Adobe Illustrator"
     ]
+  };
+
+  const handleContactClick = () => {
+    setIsModalOpen(true);
+    setSubmitStatus(null);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSubmitStatus(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      // Replace these with your actual EmailJS credentials
+      const result = await emailjs.sendForm(
+        'YOUR_SERVICE_ID', // Replace with your service ID
+        'YOUR_TEMPLATE_ID', // Replace with your template ID
+        formRef.current,
+        'YOUR_PUBLIC_KEY' // Replace with your public key
+      );
+
+      console.log('Email sent successfully:', result);
+      setSubmitStatus('success');
+      formRef.current.reset();
+      
+      // Close modal after 2 seconds on success
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setSubmitStatus(null);
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,7 +132,7 @@ function About() {
         ))}
       </div>
 
-      <div className="bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between max-w-[850px] mx-auto mt-12">
+      <div id='contact' className="bg-gradient-to-r from-green-500 via-green-400 to-cyan-400 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between max-w-[850px] mx-auto mt-12">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-black">
             Let&apos;s create something amazing together
@@ -92,10 +142,124 @@ function About() {
             discuss how I can help you achieve your goals.
           </p>
         </div>
-        <button className="mt-4 md:mt-0 px-5 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all duration-300 hover:scale-105">
+        <button 
+          onClick={handleContactClick}
+          className="mt-4 md:mt-0 px-5 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all duration-300 hover:scale-105"
+        >
           Contact Me
         </button>
       </div>
+
+      {/* Contact Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-md border border-green-500 shadow-[0_0_25px_rgba(34,197,94,0.3)]">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-white">Get In Touch</h3>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-white text-2xl"
+              >
+                &times;
+              </button>
+            </div>
+
+            {submitStatus === 'success' ? (
+              <div className="text-center py-8">
+                <div className="text-green-400 text-5xl mb-4">✓</div>
+                <h4 className="text-white text-lg font-semibold mb-2">
+                  Message Sent!
+                </h4>
+                <p className="text-gray-400">
+                  Thank you for reaching out. I'll get back to you soon!
+                </p>
+              </div>
+            ) : (
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+                    Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="from_name"
+                    required
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    placeholder="Your Name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="from_email"
+                    required
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">
+                    Subject *
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    placeholder="Project Inquiry"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows="4"
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 resize-none"
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                </div>
+
+                {submitStatus === 'error' && (
+                  <div className="text-red-400 text-sm text-center">
+                    Failed to send message. Please try again.
+                  </div>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 rounded-md hover:bg-gray-700 transition-colors"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-md hover:from-green-600 hover:to-green-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
