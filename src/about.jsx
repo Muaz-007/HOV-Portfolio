@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 // import emailjs from '@emailjs/browser';
 
 function About() {
@@ -14,27 +14,18 @@ function About() {
       "HTML5",
       "CSS3",
       "Tailwind CSS",
-      "Bootstrap"
+      "Bootstrap",
     ],
-    "Backend & Tools": [
-      "Node.js",
-      "Git",
-      "GitHub",
-      "REST APIs"
-    ],
-    "Platforms & CMS": [
-      "WordPress",
-      "Wix",
-      "Shopify"
-    ],
+    "Backend & Tools": ["Node.js", "Git", "GitHub", "REST APIs"],
+    "Platforms & CMS": ["WordPress", "Wix", "Shopify"],
     "Design & Creative": [
       "Graphic Design",
       "UI/UX Design",
       "Logo Design",
       "Figma",
       "Adobe Photoshop",
-      "Adobe Illustrator"
-    ]
+      "Adobe Illustrator",
+    ],
   };
 
   const handleContactClick = () => {
@@ -53,27 +44,48 @@ function About() {
     setSubmitStatus(null);
 
     try {
-      // Replace these with your actual EmailJS credentials
-      const result = await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // Replace with your service ID
-        'YOUR_TEMPLATE_ID', // Replace with your template ID
-        formRef.current,
-        'YOUR_PUBLIC_KEY' // Replace with your public key
-      );
+      const formData = new FormData(formRef.current);
+      const data = {
+        from_name: formData.get("from_name"),
+        from_email: formData.get("from_email"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
+      };
 
-      console.log('Email sent successfully:', result);
-      setSubmitStatus('success');
+      // Use your local backend (development)
+      const baseURL = import.meta.env.DEV
+        ? "http://localhost:3001"
+        : "https://your-backend-url.vercel.app"; // Replace with your deployed backend URL
+
+      const response = await fetch(`${baseURL}/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // Check if response is OK
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || `HTTP error! status: ${response.status}`
+        );
+      }
+
+      const result = await response.json();
+
+      console.log("✅ Email sent successfully:", result);
+      setSubmitStatus("success");
       formRef.current.reset();
-      
-      // Close modal after 2 seconds on success
+
       setTimeout(() => {
         setIsModalOpen(false);
         setSubmitStatus(null);
       }, 2000);
-      
     } catch (error) {
-      console.error('Error sending email:', error);
-      setSubmitStatus('error');
+      console.error("❌ Error sending email:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,16 +104,21 @@ function About() {
 
         <div className="text-gray-400 mt-2 max-w-2xl mx-auto">
           <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            From my workspace in <span className="text-green-400">Lahore, Pakistan</span>, I blend <span className="text-green-400">code and creativity</span>
-            as a <span className="text-green-400">web developer and graphic designer</span>. I build dynamic WordPress
-            solutions and design captivating visuals that make brands stand out.
-            Beyond pixels and programming, I'm constantly learning new
-            technologies and embracing creative problems that fuel my growth in
-            this ever-evolving digital landscape.
+            From my workspace in{" "}
+            <span className="text-green-400">Lahore, Pakistan</span>, I blend{" "}
+            <span className="text-green-400">code and creativity</span>
+            as a{" "}
+            <span className="text-green-400">
+              web developer and graphic designer
+            </span>
+            . I build dynamic WordPress solutions and design captivating visuals
+            that make brands stand out. Beyond pixels and programming, I'm
+            constantly learning new technologies and embracing creative problems
+            that fuel my growth in this ever-evolving digital landscape.
           </p>
         </div>
       </div>
-      
+
       <div className="p-6 text-center my-12 border border-green-500 rounded-2xl bg-gray-800 max-w-[850px] mx-auto shadow-[0_0_25px_rgba(34,197,94,0.3)]">
         <h2 className="text-2xl font-extrabold bg-clip-text bg-gradient-to-r text-white mt-2">
           My Toolbox
@@ -132,7 +149,10 @@ function About() {
         ))}
       </div>
 
-      <div id='contact' className="bg-gradient-to-r from-green-500 via-green-400 to-cyan-400 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between max-w-[850px] mx-auto mt-12">
+      <div
+        id="contact"
+        className="bg-gradient-to-r from-green-500 via-green-400 to-cyan-400 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between max-w-[850px] mx-auto mt-12"
+      >
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-black">
             Let&apos;s create something amazing together
@@ -142,7 +162,7 @@ function About() {
             discuss how I can help you achieve your goals.
           </p>
         </div>
-        <button 
+        <button
           onClick={handleContactClick}
           className="mt-4 md:mt-0 px-5 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all duration-300 hover:scale-105"
         >
@@ -164,7 +184,7 @@ function About() {
               </button>
             </div>
 
-            {submitStatus === 'success' ? (
+            {submitStatus === "success" ? (
               <div className="text-center py-8">
                 <div className="text-green-400 text-5xl mb-4">✓</div>
                 <h4 className="text-white text-lg font-semibold mb-2">
@@ -177,7 +197,10 @@ function About() {
             ) : (
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
                     Name *
                   </label>
                   <input
@@ -191,7 +214,10 @@ function About() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
                     Email *
                   </label>
                   <input
@@ -205,7 +231,10 @@ function About() {
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
                     Subject *
                   </label>
                   <input
@@ -219,7 +248,10 @@ function About() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
                     Message *
                   </label>
                   <textarea
@@ -232,7 +264,7 @@ function About() {
                   ></textarea>
                 </div>
 
-                {submitStatus === 'error' && (
+                {submitStatus === "error" && (
                   <div className="text-red-400 text-sm text-center">
                     Failed to send message. Please try again.
                   </div>
@@ -252,7 +284,7 @@ function About() {
                     disabled={isSubmitting}
                     className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-md hover:from-green-600 hover:to-green-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                 </div>
               </form>
