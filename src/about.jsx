@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-// import emailjs from '@emailjs/browser';
+import emailjs from '@emailjs/browser';
 
 function About() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,57 +38,47 @@ function About() {
     setSubmitStatus(null);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    try {
-      const formData = new FormData(formRef.current);
-      const data = {
-        from_name: formData.get("from_name"),
-        from_email: formData.get("from_email"),
-        subject: formData.get("subject"),
-        message: formData.get("message"),
-      };
+    // EmailJS service configuration
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      // Use your local backend (development)
-      const baseURL = import.meta.env.DEV
-        ? "http://localhost:3001"
-        : "https://your-backend-url.vercel.app"; // Replace with your deployed backend URL
-
-      const response = await fetch(`${baseURL}/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      // Check if response is OK
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`
-        );
-      }
-
-      const result = await response.json();
-
-      console.log("✅ Email sent successfully:", result);
-      setSubmitStatus("success");
-      formRef.current.reset();
-
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setSubmitStatus(null);
-      }, 2000);
-    } catch (error) {
-      console.error("❌ Error sending email:", error);
+    if (!serviceId || !templateId || !publicKey) {
+      console.error("❌ EmailJS credentials are missing in .env file");
       setSubmitStatus("error");
-    } finally {
       setIsSubmitting(false);
+      alert("EmailJS configuration is missing. Please check your .env file.");
+      return;
     }
+
+    emailjs
+      .sendForm(serviceId, templateId, formRef.current, {
+        publicKey: publicKey,
+      })
+      .then(
+        (result) => {
+          console.log("✅ Email sent successfully:", result.text);
+          setSubmitStatus("success");
+          formRef.current.reset();
+
+          setTimeout(() => {
+            setIsModalOpen(false);
+            setSubmitStatus(null);
+          }, 2000);
+        },
+        (error) => {
+          console.error("❌ Error sending email:", error.text);
+          setSubmitStatus("error");
+        }
+      )
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
